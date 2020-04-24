@@ -1,10 +1,24 @@
 import React, { Component } from 'react'
-import { Form, Input, Button } from 'antd'
-import { UserOutlined, LockOutlined} from '@ant-design/icons'
+import { Form, Input, Button, message } from 'antd'
+import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import './login.less'
+import { reqLogin } from '../../api'
+import { memoryStorage } from '../../utils/memoryUtils'
+import { addStorage } from '../../utils/storageUtils'
+
 class Login extends Component {
-	handelSubmit = (value) => {
+	// 校验通过的登录方法
+	handelSubmit = async (value) => {
 		console.log('submit:', value)
+		const { username, password } = value
+		const result = await reqLogin(username, password)
+		console.log(result.data)
+		if (result.status === 0) {
+			message.success('登录成功')
+			memoryStorage.user = result.data
+			addStorage(result.data)
+			this.props.history.replace('/')
+		}
 	}
 	render() {
 		return (
@@ -15,7 +29,7 @@ class Login extends Component {
 					<Form
 						name="normal_login"
 						className="login-form"
-						initialValues={{ username: "admin", password: "123123" }}
+						initialValues={{ username: 'admin', password: 'admin' }}
 						onFinish={this.handelSubmit}
 					>
 						<Form.Item
@@ -24,8 +38,8 @@ class Login extends Component {
 								{ required: true, message: '请输入用户名' },
 								{ min: 4, message: '用户名不能小于4位' },
 							]}
-              validateTrigger="onBlur"
-              validateFirst={true}
+							validateTrigger="onBlur"
+							validateFirst={true}
 						>
 							<Input
 								prefix={<UserOutlined className="site-form-item-icon" />}
@@ -35,8 +49,8 @@ class Login extends Component {
 						</Form.Item>
 						<Form.Item
 							name="password"
-              rules={[{ required: true, message: '请输入密码' }]}
-              validateTrigger="onBlur"
+							rules={[{ required: true, message: '请输入密码' }]}
+							validateTrigger="onBlur"
 						>
 							<Input
 								prefix={<LockOutlined className="site-form-item-icon" />}
