@@ -15,7 +15,7 @@ class Header extends Component {
       icon: <ExclamationCircleOutlined />,
       okText: '确认',
       cancelText: '取消',
-			onOk: () => {
+			onOk: () => {  // 使用箭头函数让this指向实例对象
 				removeStorage()
 				memoryStorage.user = {}
 				this.props.history.replace('/login')

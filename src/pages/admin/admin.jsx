@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Layout } from 'antd'
+import { Layout, Alert } from 'antd'
 import { Redirect, Switch, Route } from 'react-router-dom'
 
 import { memoryStorage } from '../../utils/memoryUtils'
@@ -30,6 +30,7 @@ class Admin extends Component {
 					<LeftNav />
 				</Sider>
 				<Layout>
+        <Alert message="Warning text" banner closable/>
 					<Header />
 					<Content
 						style={{ margin: '20px', backgroundColor: '#fff', color: 'red' }}
